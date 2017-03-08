@@ -1,3 +1,5 @@
+//merge sort
+//2017-03-08 19:41:11
 #include<iostream>
 #include<vector>
 
@@ -12,7 +14,7 @@ private:
 		if (begin < end) {
 			dnums1 = merge(nums, begin, mid);
 			dnums2 = merge(nums, mid + 1, end);
-			dnums1.push_back(INT_MAX);		//数组末尾添加标记数
+			dnums1.push_back(INT_MAX);
 			dnums2.push_back(INT_MAX);
 		}
 

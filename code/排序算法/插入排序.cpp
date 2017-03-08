@@ -1,3 +1,5 @@
+//insertion sort
+//2017-03-08 19:40:18
 #include<iostream>
 #include<vector>
 
@@ -26,7 +28,7 @@ public:
 				sorted_nums.push_back(number);
 			}
 
-			for (auto n : sorted_nums) {		//逐步显示插入过程
+			for (auto n : sorted_nums) {		//show the insert procedure step by step
 				cout << n << ' ';
 			}
 			cout << endl;
