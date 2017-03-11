@@ -25,6 +25,24 @@ private:
 		print_tree(node->right_child);
 	}
 
+	void transplant(TreeNode* d_node, TreeNode* t_node) {
+		if (d_node == root) {
+			root = t_node;
+		}
+		else {
+			if (d_node == d_node->parent->left_child) {
+				d_node->parent->left_child = t_node;				
+			}
+			else {
+				d_node->parent->right_child = t_node;
+			}
+		}
+		if (t_node != nullptr) {
+			t_node->parent = d_node->parent;
+		}
+		delete d_node;
+	}
+
 public:
 	Tree() { root = nullptr; }
 
@@ -104,41 +122,21 @@ public:
 	int erase(TreeNode* node) {
 		int d = node->data;
 		if (node->left_child == nullptr) {
-			if (node->right_child == nullptr) {
-				TreeNode* p = node->parent;
-				if (p->left_child == node) {
-					p->left_child = nullptr;
-				}
-				else {
-					p->right_child = nullptr;
-				}
-			}
-			else {
-				TreeNode* p = node->parent;
-				if (p->left_child == node) {
-					p->left_child = node->right_child;
-				}
-				else {
-					p->right_child = node->right_child;
-				}
-			}
-			delete node;
+			transplant(node, node->right_child);
 		}
 		else {
 			if (node->right_child == nullptr) {
-				TreeNode* p = node->parent;
-				if (p->left_child == node) {
-					p->left_child = node->left_child;
-				}
-				else {
-					p->right_child = node->left_child;
-				}
-				delete node;
+				transplant(node, node->left_child);
 			}
 			else {
 				TreeNode* suc = find_suc(node);
 				node->data = suc->data;
-				suc->parent->left_child = suc->right_child;
+				if (suc->parent == node) {
+					node->right_child = suc->right_child;
+				}
+				else {
+					suc->parent->left_child = suc->right_child;
+				}
 				delete suc;
 			}
 		}
@@ -190,7 +188,7 @@ int main() {
 	else cout << suc->data << endl;
 	cout << endl;
 
-	cout << "Delete (0,1,2,9):" << endl;
+	cout << "Delete (0,1,2,9,5):" << endl;
 	test_tree.erase(test_tree.find(0, test_tree.get_root()));
 	test_tree.show_tree();
 	test_tree.erase(test_tree.find(1, test_tree.get_root()));
@@ -198,6 +196,8 @@ int main() {
 	test_tree.erase(test_tree.find(2, test_tree.get_root()));
 	test_tree.show_tree();
 	test_tree.erase(test_tree.find(9, test_tree.get_root()));
+	test_tree.show_tree();
+	test_tree.erase(test_tree.find(5, test_tree.get_root()));
 	test_tree.show_tree();
 
 	return 0;
